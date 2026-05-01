@@ -1,0 +1,150 @@
+/* GLOBAL BACKGROUND */
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #e2e8f0, #f8fafc 60%);
+}
+
+/* MAIN WRAPPER */
+.app-container {
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 50px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* LOGO */
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* NAV */
+.nav {
+  display: flex;
+  gap: 30px;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #64748b;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.nav button.active {
+  color: #0ea5a4;
+  font-weight: 600;
+}
+
+.nav button.active::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: #0ea5a4;
+}
+
+/* PLUS BUTTON */
+.plus-btn {
+  background: linear-gradient(135deg, #0ea5a4, #14b8a6);
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.plus-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(14, 165, 164, 0.3);
+}
+
+/* UPLOAD SCREEN */
+.upload-box {
+  margin: 120px auto;
+  width: 320px;
+  padding: 40px;
+  text-align: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  color: #334155;
+}
+
+/* GALLERY */
+.gallery {
+  padding: 50px 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 28px;
+}
+
+/* CARD */
+.card {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* IMAGE */
+.card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+/* TEXT */
+.text {
+  padding: 16px;
+}
+
+.text h4 {
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #64748b;
+}
+
+/* DETAILS */
+.text p {
+  margin: 6px 0;
+  font-size: 13px;
+  color: #475569;
+}
+
+.label {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.expiry {
+  color: #dc2626;
+  font-weight: 600;
+}
