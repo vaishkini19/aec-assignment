@@ -24,9 +24,9 @@ function App() {
   newFiles.forEach((file) => {
     formData.append("prescriptions", file); // ✅ important
   });
-
+  formData.append("email", "anvitha2010050@gmail.com");
   try {
-    const res = await fetch("http://localhost:5000/upload", {
+    const res = await fetch("api/medicines/upload", {
       method: "POST",
       body: formData
     });
@@ -34,9 +34,9 @@ function App() {
     const data = await res.json();
 
     setFiles((prev) =>
-      prev.map((item, index) => ({
+      prev.map((item) => ({
         ...item,
-        text: data[index]?.text || "No data found"
+        text: data.extractedText || "No data found"
       }))
     );
 
