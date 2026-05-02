@@ -10,28 +10,42 @@ function App() {
   const inputRef = useRef();
 
   // Handle Upload
-  const handleUpload = (newFiles) => {
-    const mapped = newFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-      text: "Processing..."
-    }));
+  const handleUpload = async (newFiles) => {
+  const mapped = newFiles.map((file) => ({
+    file,
+    preview: URL.createObjectURL(file),
+    text: "Processing..."
+  }));
 
-    setFiles((prev) => [...prev, ...mapped]);
+  setFiles((prev) => [...prev, ...mapped]);
 
-    // Dummy OCR (replace with backend later)
-    setTimeout(() => {
-      setFiles((prev) =>
-        prev.map((item) => ({
-          ...item,
-          text: "Paracetamol 500mg | Expiry: 2026 | Next Visit: 12 May"
-        }))
-      );
-    }, 1000);
+  const formData = new FormData();
 
-    // Switch to Uploads tab automatically
-    setView("uploads");
-  };
+  newFiles.forEach((file) => {
+    formData.append("prescriptions", file); // ✅ important
+  });
+
+  try {
+    const res = await fetch("http://localhost:5000/upload", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    setFiles((prev) =>
+      prev.map((item, index) => ({
+        ...item,
+        text: data[index]?.text || "No data found"
+      }))
+    );
+
+  } catch (err) {
+    console.error("Upload error:", err);
+  }
+
+  setView("uploads");
+};
 
   return (
   <div>
