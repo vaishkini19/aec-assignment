@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const formatData = (text) => {
   if (!text) return {};
@@ -23,6 +23,24 @@ const formatData = (text) => {
 };
 
 const Gallery = ({ files }) => {
+  const [editIndex, setEditIndex] = useState(null);
+  const [editData, setEditData] = useState({
+    medicine: "",
+    expiry: "",
+    visit: "",
+  });
+
+  const handleEditClick = (item, index) => {
+    const data = formatData(item.text);
+    setEditIndex(index);
+    setEditData(data);
+  };
+
+  const handleSave = (index) => {
+    files[index].text = `${editData.medicine} | expiry:${editData.expiry} | visit:${editData.visit}`;
+    setEditIndex(null);
+  };
+
   return (
     <div className="gallery">
       {files.map((item, index) => {
@@ -30,20 +48,59 @@ const Gallery = ({ files }) => {
 
         return (
           <div className="card" key={index}>
+
             <img src={item.preview} alt="upload" />
 
             <div className="text">
               <h4>Extracted Data</h4>
 
-              <p><strong>Medicine:</strong> {data.medicine}</p>
+              {editIndex === index ? (
+                <>
+                  <input
+                    value={editData.medicine}
+                    onChange={(e) =>
+                      setEditData({ ...editData, medicine: e.target.value })
+                    }
+                    placeholder="Medicine"
+                  />
 
-              <p style={{ color: "red" }}>
-                <strong>Expiry:</strong> {data.expiry}
-              </p>
+                  <input
+                    value={editData.expiry}
+                    onChange={(e) =>
+                      setEditData({ ...editData, expiry: e.target.value })
+                    }
+                    placeholder="Expiry"
+                  />
 
-              <p><strong>Next Visit:</strong> {data.visit}
-              </p>
+                  <input
+                    value={editData.visit}
+                    onChange={(e) =>
+                      setEditData({ ...editData, visit: e.target.value })
+                    }
+                    placeholder="Next Visit"
+                  />
+
+                  <button onClick={() => handleSave(index)}>
+                    Save
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p><strong>Medicine:</strong> {data.medicine}</p>
+
+                  <p style={{ color: "red" }}>
+                    <strong>Expiry:</strong> {data.expiry}
+                  </p>
+
+                  <p><strong>Next Visit:</strong> {data.visit}</p>
+
+                  <button onClick={() => handleEditClick(item, index)}>
+                    Edit
+                  </button>
+                </>
+              )}
             </div>
+
           </div>
         );
       })}
