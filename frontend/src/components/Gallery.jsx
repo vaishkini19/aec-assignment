@@ -22,7 +22,7 @@ const formatData = (text) => {
   return { medicine, expiry, visit };
 };
 
-const Gallery = ({ files }) => {
+const Gallery = ({ files,onUpdate }) => {
   const [editIndex, setEditIndex] = useState(null);
   const [editData, setEditData] = useState({
     medicine: "",
@@ -37,7 +37,12 @@ const Gallery = ({ files }) => {
   };
 
   const handleSave = (index) => {
-    files[index].text = `${editData.medicine} | expiry:${editData.expiry} | visit:${editData.visit}`;
+    const item = files[index];
+    const newText= `${editData.medicine} | expiry:${editData.expiry} | visit:${editData.visit}`;
+    item.text=newText;
+    if (onUpdate) {
+      onUpdate(item._id, editData.medicine, editData.expiry,newText);
+    }
     setEditIndex(null);
   };
 

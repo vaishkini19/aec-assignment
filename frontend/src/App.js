@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Header from "./components/Header";
 import Gallery from "./components/Gallery";
-import Home from "./components/Home";   // ✅ HERE
+import Home from "./components/Home";   
 import "./App.css";
 
 function App() {
@@ -9,11 +9,9 @@ function App() {
   const [view, setView] = useState("home");
   const inputRef = useRef();
 
-
-
   // 👇 ADD HERE
   useEffect(() => {
-    fetch("http://localhost:5000/api/test")
+    fetch("/api/test")
       .then(res => res.json())
       .then(data => console.log("FROM BACKEND:", data))
       .catch(err => console.log("Error:", err));
@@ -36,17 +34,18 @@ function App() {
   });
   formData.append("email", "anvitha2010050@gmail.com");
   try {
-    const res = await fetch("api/medicines/upload", {
+    const res = await fetch("/api/medicines/upload", {
       method: "POST",
       body: formData
     });
 
-    const data = await res.json();
+    const result = await res.json();
 
     setFiles((prev) =>
       prev.map((item) => ({
         ...item,
-        text: data.extractedText || "No data found"
+        _id: result.data._id,
+        text: result.extractedText || "No data found"
       }))
     );
 
@@ -55,6 +54,25 @@ function App() {
   }
 
   setView("uploads");
+};
+const handleUpdateMedicine = async (id, updatedText,updatedDate,fullText) => {
+  try {
+    const res = await fetch(`/api/medicines/verify-medicine/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: updatedText,expiryDate: updatedDate })
+    });
+
+    if (res.ok) {
+      // If DB update is successful, update the UI state
+      setFiles((prev) =>
+        prev.map((item) => (item._id === id ? { ...item, text: fullText } : item))
+      );
+      console.log("Database updated successfully!");
+    }
+  } catch (err) {
+    console.error("Failed to update database:", err);
+  }
 };
 
   return (
@@ -86,7 +104,8 @@ function App() {
       </div>
     )}
 
-    {view === "uploads" && <Gallery files={files} />}
+    {view === "uploads" && <Gallery files={files}
+    onUpdate={handleUpdateMedicine} />}
   </div>
 );
 }

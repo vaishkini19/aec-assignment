@@ -124,8 +124,8 @@ router.put('/update/:id', async (req, res) => {
         const updatedMed = await Medicine.findByIdAndUpdate(
             req.params.id,
             { 
-                name, 
-                expiryDate: new Date(expiryDate), 
+                ...(expiryDate && { expiryDate: new Date(expiryDate) }),
+                ...(name && { name }), // This looks for 'name' in req.body
                 isVerified: true 
             },
             { new: true }

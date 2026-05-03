@@ -35,7 +35,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Automated Expiry Reminder (Runs every day at 00:00 server time)
-cron.schedule('0 0 * * *', async () => {
+cron.schedule('* * * * *', async () => {
     console.log('Running daily expiry check...');
     try {
         const today = new Date();
@@ -68,7 +68,9 @@ cron.schedule('0 0 * * *', async () => {
         console.error("Error in cron job:", error);
     }
 });
-
+app.get('/api/test', (req, res) => {
+  res.json({ message: "Backend is reachable!" });
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
