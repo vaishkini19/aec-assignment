@@ -22,7 +22,7 @@ const formatData = (text) => {
   return { medicine, expiry, visit };
 };
 
-const Gallery = ({ files,onUpdate }) => {
+const Gallery = ({ files,onUpdate,onDelete }) => {
   const [editIndex, setEditIndex] = useState(null);
   const [editData, setEditData] = useState({
     medicine: "",
@@ -102,6 +102,13 @@ const Gallery = ({ files,onUpdate }) => {
                   <button onClick={() => handleEditClick(item, index)}>
                     Edit
                   </button>
+                  <button 
+                className="delete-btn" 
+                onClick={() => onDelete(item._id)}
+                style={{ backgroundColor: "#ff4d4d", color: "white", marginLeft: "10px" }}
+              >
+                Delete
+              </button>
                 </>
               )}
             </div>

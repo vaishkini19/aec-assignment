@@ -163,4 +163,24 @@ router.patch('/verify-medicine/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+// DELETE: Remove a medicine record permanently
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedMed = await Medicine.findByIdAndDelete(req.params.id);
+
+        if (!deletedMed) {
+            return res.status(404).json({ error: "Medicine not found" });
+        }
+
+        res.status(200).json({ 
+            message: "Record successfully deleted from database",
+            id: req.params.id 
+        });
+    } catch (error) {
+        console.error("Deletion error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 module.exports = router;

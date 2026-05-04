@@ -74,7 +74,26 @@ const handleUpdateMedicine = async (id, updatedText,updatedDate,fullText) => {
     console.error("Failed to update database:", err);
   }
 };
+const handleDeleteMedicine = async (id) => {
+  // Optional: Add a confirmation dialog
+  if (!window.confirm("Are you sure you want to delete this record?")) return;
 
+  try {
+    const res = await fetch(`/api/medicines/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      // Remove the item from the 'files' state so it disappears from the Gallery
+      setFiles((prev) => prev.filter((item) => item._id !== id));
+      console.log("Deleted from DB and UI");
+    } else {
+      console.error("Failed to delete from server");
+    }
+  } catch (err) {
+    console.error("Network error during deletion:", err);
+  }
+};
   return (
   <div>
     {/* Hidden file input */}
@@ -105,7 +124,8 @@ const handleUpdateMedicine = async (id, updatedText,updatedDate,fullText) => {
     )}
 
     {view === "uploads" && <Gallery files={files}
-    onUpdate={handleUpdateMedicine} />}
+    onUpdate={handleUpdateMedicine}
+    onDelete={handleDeleteMedicine}  />}
   </div>
 );
 }
