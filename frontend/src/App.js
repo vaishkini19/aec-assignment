@@ -1,13 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import Header from "./components/Header";
 import Gallery from "./components/Gallery";
-import Home from "./components/Home";   // ✅ HERE
+import Home from "./components/Home";  
+import Login from "./components/Login"; // ✅ HERE
 import "./App.css";
 
 function App() {
   const [files, setFiles] = useState([]);
   const [view, setView] = useState("home");
   const inputRef = useRef();
+  const [loggedIn, setLoggedIn]=useState(false);
 
 
 
@@ -56,6 +58,11 @@ function App() {
 
   setView("uploads");
 };
+if(!loggedIn){
+  return <Login onLogin={()=>
+    setLoggedIn(true)}/>
+  }
+
 
   return (
   <div>
